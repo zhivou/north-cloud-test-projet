@@ -1,5 +1,6 @@
 import ProductModel from '../../data-models/product.model';
 import { expect, test } from '../../fixtures/base-fixtures';
+import { sortingTestData } from '../../fixtures/sort-fixtures';
 
 test.beforeEach(async ({ inventoryPage }) => {
     await inventoryPage.goto();
@@ -26,65 +27,22 @@ test('test all products are displayed with correct info', async ({ inventoryPage
     }
 });
 
-test('test products can be sorted by price descending', async ({ inventoryPage }) => {
-    await inventoryPage.navbar.selectProductSort('hilo');
-  
-    const allItems = await inventoryPage.productItems.all();
-    expect(allItems).toHaveLength(6);
-    const prices: number[] = await inventoryPage.collectPrices();
-  
-    await test.step('assert prices are in descending order', async () => {
-      for (let i = 0; i < prices.length - 1; i++) {
-        expect(prices[i], 'Expected prices to be sorted in descending order').toBeGreaterThanOrEqual(prices[i + 1]);
-      }
+for (const { sortOption, description, collectValues, assertOrder } of sortingTestData) {
+    test(`test products can be sorted by ${description}`, async ({ inventoryPage }) => {
+        await inventoryPage.navbar.selectProductSort(sortOption);
+
+        const allItems = await inventoryPage.productItems.all();
+        expect(allItems).toHaveLength(6);
+
+        const values = await collectValues(inventoryPage);
+
+        await test.step(`assert items are sorted by ${description}`, async () => {
+            for (let i = 0; i < values.length - 1; i++) {
+                assertOrder(values[i], values[i + 1]);
+            }
+        });
     });
-});
-
-test('test products can be sorted by price ascending', async ({ inventoryPage }) => {
-    await inventoryPage.navbar.selectProductSort('lohi');
-  
-    const allItems = await inventoryPage.productItems.all();
-    expect(allItems).toHaveLength(6);
-    const prices: number[] = await inventoryPage.collectPrices();
-  
-    await test.step('assert prices are in ascending order', async () => {
-      for (let i = 0; i < prices.length - 1; i++) {
-        expect(prices[i], 'Expected prices to be sorted in ascending order').toBeLessThanOrEqual(prices[i + 1]);
-      }
-    });
-});
-
-test('test products can be sorted by name A-Z', async ({ inventoryPage }) => {
-    await inventoryPage.navbar.selectProductSort('az');
-
-    const allItems = await inventoryPage.productItems.all();
-    expect(allItems).toHaveLength(6);
-    const productNames: string[] = await inventoryPage.collectProductNames();
-
-    await test.step('assert product names are in ascending alphabetical order', async () => {
-      for (let i = 0; i < productNames.length - 1; i++) {
-        expect(productNames[i].localeCompare(productNames[i + 1]),
-          'Expected product names to be sorted from A to Z',
-        ).toBeLessThanOrEqual(0);
-      }
-    });
-});
-
-test('test products can be sorted by name Z-A', async ({ inventoryPage }) => {
-    await inventoryPage.navbar.selectProductSort('za');
-
-    const allItems = await inventoryPage.productItems.all();
-    expect(allItems).toHaveLength(6);
-    const productNames: string[] = await inventoryPage.collectProductNames();
-
-    await test.step('assert product names are in descending alphabetical order', async () => {
-      for (let i = 0; i < productNames.length - 1; i++) {
-        expect(productNames[i].localeCompare(productNames[i + 1]),
-          'Expected product names to be sorted from Z to A',
-        ).toBeGreaterThanOrEqual(0);
-      }
-    });
-});
+}
 
 test('test user can see details of a product', async ({ inventoryPage, productDetailPage }) => {
     expect(await inventoryPage.productItems.all()).toHaveLength(6);
