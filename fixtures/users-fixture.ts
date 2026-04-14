@@ -13,6 +13,12 @@ export type WrongLoginUserScenario = {
     expectedErrorMessage: string | RegExp;
 };
 
+export type IncompleteUserInformationScenario = {
+    id: string;
+    user: UserModel;
+    expectedErrorMessage: string;
+};
+
 export const wrongLoginUserScenarios: readonly WrongLoginUserScenario[] = [
     {
         id: 'empty-credentials',
@@ -64,4 +70,51 @@ export const usersFixture = {
     ) => {
         await use(wrongLoginUserScenarios);
     },
+    incompleteUserInformation: async (
+        {},
+        use: (value: readonly IncompleteUserInformationScenario[]) => Promise<void>
+    ) => {
+        await use(incompleteUserInformation);
+    },
 };
+
+const baseUser = new UserModel('standard_user');
+baseUser.generateRandomInformation();
+
+export const incompleteUserInformation: readonly IncompleteUserInformationScenario[] = [
+    {
+        id: 'missing-first-name',
+        user: baseUser.copyWith({ firstName: '' }),
+        expectedErrorMessage: 'Error: First Name is required',
+    },
+    {
+        id: 'missing-last-name',
+        user: baseUser.copyWith({ lastName: '' }),
+        expectedErrorMessage: 'Error: Last Name is required',
+    },
+    {
+        id: 'missing-postal-code',
+        user: baseUser.copyWith({ postalCode: '' }),
+        expectedErrorMessage: 'Error: Postal Code is required',
+    },
+    {
+        id: 'missing-first-and-last-name',
+        user: baseUser.copyWith({ firstName: '', lastName: '' }),
+        expectedErrorMessage: 'Error: First Name is required',
+    },
+    {
+        id: 'missing-first-name-and-postal-code',
+        user: baseUser.copyWith({ firstName: '', postalCode: '' }),
+        expectedErrorMessage: 'Error: First Name is required',
+    },
+    {
+        id: 'missing-last-name-and-postal-code',
+        user: baseUser.copyWith({ lastName: '', postalCode: '' }),
+        expectedErrorMessage: 'Error: Last Name is required',
+    },
+    {
+        id: 'missing-all-fields',
+        user: baseUser.copyWith({ firstName: '', lastName: '', postalCode: '' }),
+        expectedErrorMessage: 'Error: First Name is required',
+    },
+];

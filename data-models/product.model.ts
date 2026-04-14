@@ -30,6 +30,12 @@ export default class ProductModel {
                 "$15.99",
                 "Get your testing superhero on with the Sauce Labs bolt T-shirt. From American Apparel, 100% ringspun combed cotton, heather gray with red bolt.",
                 "/static/media/bolt-shirt-1200x1500.1222118e1574d309162d.jpg"
+            ),
+            new ProductModel(
+                "Sauce Labs Fleece Jacket",
+                "$49.99",
+                "It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office.",
+                "/static/media/fleece-jacket-1200x1500.a9c1f24d7da4f00ce3a7.jpg"
             )
         ];
     }

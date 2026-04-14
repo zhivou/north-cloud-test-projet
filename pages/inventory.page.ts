@@ -1,5 +1,6 @@
 import { type Page, type Locator, PlaywrightTestArgs, expect } from '@playwright/test';
 import BasePage from './base.page';
+import ProductModel from '../data-models/product.model';
 
 export const inventoryPage = {
     inventoryPage: async ({ page }: PlaywrightTestArgs, use: (r: InventoryPage) => void) => {
@@ -64,5 +65,12 @@ export class InventoryPage extends BasePage {
             productNames.push(productNameText!);
         }
         return productNames;
+    }
+
+    async addToCard(products: ProductModel[]) {
+        for (const product of products) {
+            const item = this.productItems.filter({ has: this.page.getByTestId('inventory-item-name').getByText(product.name, { exact: true }) });
+            await this.productAddToCartButton(item).click();
+        }
     }
 }
