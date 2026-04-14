@@ -20,4 +20,10 @@ export default class BasePage {
     await this.navbar.drawerButton.click();
     await this.drawer.logoutLink.click();
   }
+
+  async resetAppState() {
+    await this.navbar.drawerButton.click();
+    await this.drawer.resetAppStateLink.click();
+    await this.page.reload();
+  }
 }

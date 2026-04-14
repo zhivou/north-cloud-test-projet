@@ -1,4 +1,6 @@
+import { join } from 'node:path';
 import { defineConfig, devices } from '@playwright/test';
+import { standardUser } from './fixtures/users-fixture';
 
 /**
  * Read environment variables from file.
@@ -46,9 +48,13 @@ export default defineConfig({
       testMatch: '**/*.spec.ts',
     },
     {
-      name: 'e2e-tests',
-      testMatch: '**/e2e/**/*.spec.ts',
-      dependencies: ['setup'],
+      name: 'general-tests',
+      testDir: './tests/general',
+      testMatch: '**/*.spec.ts',
+      //dependencies: ['setup'], TODO RE ENABLE THIS WHEN TESTS ARE READY
+      use: {
+        storageState: join(__dirname, '.auth', `${standardUser.username}.json`),
+      },
     },
   ],
 });
