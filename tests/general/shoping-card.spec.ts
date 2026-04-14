@@ -54,7 +54,7 @@ test('test cart page displays correct items and prices', async ({ inventoryPage,
             await expect(cartPage.cartItemName(cartItem)).toHaveText(expectedCartItems[index].name);
             await expect(cartPage.cartItemPrice(cartItem)).toHaveText(expectedCartItems[index].price);
             await expect(cartPage.cartItemDescription(cartItem)).toHaveText(expectedCartItems[index].description);
-            await expect(cartPage.cartItemQuantity(cartItem)).toHaveText(String(itemsToAdd));
+            await expect(cartPage.cartItemQuantity(cartItem)).toHaveText('1');
         }
     });
 
