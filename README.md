@@ -9,6 +9,10 @@ To run tests, use:
 npx playwright test
 ```
 
+# Links
+- Project board for allowed users - https://github.com/users/zhivou/projects/3
+- CI Runner - https://github.com/zhivou/north-cloud-test-projet/actions/workflows/playwright.yml
+
 # Important assumptions
 - Swag Labs is an early-stage web application.
 - `data-test` is a protected test ID used across the development team and treated as a critical element for this test framework. Developers should not remove, move, or modify these elements without notifying the QA team. Changes are allowed only when the E2E framework is updated and validated with the new selectors.
