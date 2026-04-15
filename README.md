@@ -135,29 +135,31 @@ Following best practices, this framework uses proactive cleanup in setup and `be
 
 # Kanban Board for Found Bugs
 All bugs found while testing with `problem_user` are tracked here: https://github.com/users/zhivou/projects/3/views/1
-### P0 — Cart & Checkout Flow Recovery
-| Bug ID | Title |
-|--------|-------|
-| BR-002 | Add to Cart / Remove buttons fail for certain item IDs |
-| BR-004 | Last name field overwrites first name on checkout step one |
-| BR-006 | Checkout completion does not clear the cart |
-| BR-010 | Add to Cart button does not work on product detail page |
+## Known Bugs (problem_user)
 
-### P0 — Data Integrity & Navigation Accuracy
-| Bug ID | Title |
-|--------|-------|
-| BR-003 | Product item links are shifted by +1 item ID across all pages |
-| BR-005 | Checkout step two displays doubled item total and final total |
-| BR-007 | Checkout item total displays floating point precision error |
-| BR-011 | Product with id=6 displays invalid data and crashes the app |
+### P0 — Cart & Checkout Flow Recovery (#15)
+| ID | Title |
+|----|-------|
+| #4 | Add to Cart / Remove buttons fail for certain item IDs |
+| #6 | Last name field value overwrites first name on checkout step one |
+| #8 | Checkout fails to clear cart |
+| #12 | Add to Cart button does not work on Product Details page |
 
-### P1 — UI Consistency & Visual Polish
-| Bug ID | Title |
-|--------|-------|
-| BR-001 | Inventory sorting does not work |
-| BR-008 | Inventory product images are incorrect, duplicated, and overflow card boundaries |
-| BR-009 | About page link navigates to incorrect URL |
-| BR-012 | Product with id=3 displays incorrect product title |
+### P0 — Data Integrity & Navigation Accuracy (#16)
+| ID | Title |
+|----|-------|
+| #5 | Product item links are shifted by +1 item ID across all pages |
+| #7 | Checkout step two displays doubled item total and final total |
+| #9 | Checkout item total displays floating point precision error |
+| #13 | Product with id=6 displays invalid title, description, and price, and crashes app |
+
+### P1 — UI Consistency & Visual Polish (#17)
+| ID | Title |
+|----|-------|
+| #2 | Inventory sorting does not work |
+| #10 | Inventory products incorrect duplicated image for all items |
+| #11 | About page link in the sidebar menu navigates to incorrect URL |
+| #14 | Product with id=3 displays incorrect product title |
 
 # Considerations and Improvemnts
 - Many current test cases can be moved to lower test levels: cart calculation, sorting logic, and mocked checkout failures are better suited for unit, component (for example Storybook/Jest), or backend-level tests. Keeping all of them in E2E increases runtime and maintenance cost, so E2E should focus on realistic user workflows (for example: Login -> Sort -> Add products to cart -> Review cart -> Checkout) and prioritize the most important user-facing flows.
