@@ -133,6 +133,9 @@ Following best practices, this framework uses proactive cleanup in setup and `be
 ## 5. API Mocking (example present, currently skipped)
 - [ ] Empty cart checkout shows correct error — example test exists in `tests/general/checkout-flow.spec.ts`, but it is intentionally skipped because saucedemo has no real backend API flow for this case.
 
+# Kanban Board for Found Bugs
+All bugs found while testing with `problem_user` are tracked here: https://github.com/users/zhivou/projects/3/views/1
+
 # Considerations and Improvemnts
 - Many current test cases can be moved to lower test levels: cart calculation, sorting logic, and mocked checkout failures are better suited for unit, component (for example Storybook/Jest), or backend-level tests. Keeping all of them in E2E increases runtime and maintenance cost, so E2E should focus on realistic user workflows (for example: Login -> Sort -> Add products to cart -> Review cart -> Checkout) and prioritize the most important user-facing flows.
 - The Swag Labs development team should improve application testability in partnership with QA. Key improvements include adding a reliable way to seed environments, enabling local app startup (with Docker or natively), adopting ephemeral builds in CI/CD, and shifting testing left so automation stays effective, focused, and valuable instead of becoming automation for its own sake.
