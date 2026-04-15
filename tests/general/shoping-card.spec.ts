@@ -50,19 +50,18 @@ test('test cart page displays correct items and prices', async ({ inventoryPage,
         await cartPage.navbar.shoppingButton.click();
         const cartItemLocators = await cartPage.cartItems.all();
         expect(cartItemLocators).toHaveLength(itemsToAdd);
-        for (const [index, cartItem] of cartItemLocators.entries()) {
-            await expect(cartPage.cartItemName(cartItem)).toHaveText(expectedCartItems[index].name);
-            await expect(cartPage.cartItemPrice(cartItem)).toHaveText(expectedCartItems[index].price);
-            await expect(cartPage.cartItemDescription(cartItem)).toHaveText(expectedCartItems[index].description);
-            await expect(cartPage.cartItemQuantity(cartItem)).toHaveText('1');
+        for (const [index, cartItemLocator] of cartItemLocators.entries()) {
+            const item = cartPage.cartItem(cartItemLocator);
+            await expect(item.name).toHaveText(expectedCartItems[index].name);
+            await expect(item.price).toHaveText(expectedCartItems[index].price);
+            await expect(item.description).toHaveText(expectedCartItems[index].description);
+            await expect(item.quantity).toHaveText('1');
         }
     });
 
     await test.step('assert user can remove products from cart', async () => {
         expect(await cartPage.cartItems.all()).toHaveLength(itemsToAdd);
-        for (let i = 0; i < itemsToAdd; i++) {
-          await cartPage.cartItemRemoveButton(cartPage.cartItems.first()).click();
-        }
+        await cartPage.removeAllItems();
         await expect(inventoryPage.navbar.cartBadge).not.toBeVisible();
         expect(await cartPage.cartItems.all()).toHaveLength(0);
       });

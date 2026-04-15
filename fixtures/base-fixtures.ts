@@ -3,7 +3,7 @@ import UserModel from '../data-models/user.model';
 import { cartPage, CartPage } from '../pages/cart.page';
 import { checkoutPage, CheckoutPage } from '../pages/checkout.page';
 import { inventoryPage, InventoryPage } from '../pages/inventory.page';
-import { loginPage, LoginPage } from '../pages/login-page.page';
+import { loginPage, LoginPage } from '../pages/login.page';
 import { productDetailPage, ProductDetailPage } from '../pages/product-detail.page';
 import { type IncompleteUserInformationScenario, type WrongLoginUserScenario, usersFixture } from './users-fixture';
 

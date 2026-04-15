@@ -45,6 +45,7 @@ export default defineConfig({
       name: 'auth-tests',
       testDir: './tests/auth',
       testMatch: '**/*.spec.ts',
+      dependencies: ['setup'],
     },
     {
       name: 'general-tests',

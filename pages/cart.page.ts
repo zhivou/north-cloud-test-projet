@@ -1,10 +1,11 @@
-import { type Page, type Locator, PlaywrightTestArgs } from '@playwright/test';
+import { type Page, type Locator } from '@playwright/test';
 import BasePage from './base.page';
+import { CartItemComponent } from '../components/cart-item-component';
 
 export const cartPage = {
-    cartPage: async ({ page }: PlaywrightTestArgs, use: (r: CartPage) => void) => {
+    cartPage: async ({ page }, use) => {
         const cartPage = new CartPage(page);
-        use(cartPage);
+        await use(cartPage);
     },
 };
 
@@ -15,11 +16,8 @@ export class CartPage extends BasePage {
     readonly continueShoppingButton: Locator;
     readonly checkoutButton: Locator;
     readonly cartItems: Locator;
-    readonly cartItemName: (parent: Locator) => Locator;
-    readonly cartItemDescription: (parent: Locator) => Locator;
-    readonly cartItemPrice: (parent: Locator) => Locator;
-    readonly cartItemQuantity: (parent: Locator) => Locator;
     readonly cartItemRemoveButton: (parent: Locator) => Locator;
+    readonly cartItem: (parent: Locator) => CartItemComponent;
 
     constructor(page: Page) {
         super(page);
@@ -28,11 +26,15 @@ export class CartPage extends BasePage {
         this.checkoutButton = this.cartContainer.getByTestId('checkout');
         this.cartList = this.cartContainer.getByTestId('cart-list');
         this.cartItems = this.cartList.getByTestId('inventory-item');
-        this.cartItemName = (parent) => parent.getByTestId('inventory-item-name');
-        this.cartItemDescription = (parent) => parent.getByTestId('inventory-item-desc');
-        this.cartItemPrice = (parent) => parent.getByTestId('inventory-item-price');
-        this.cartItemQuantity = (parent) => parent.getByTestId('item-quantity');
         this.cartItemRemoveButton = (parent) => parent.getByTestId(/^remove-sauce-labs-.*$/);
+        this.cartItem = (parent) => new CartItemComponent(parent);
+    }
+
+    async removeAllItems() {
+        const count = await this.cartItems.count();
+        for (let i = 0; i < count; i++) {
+            await this.cartItemRemoveButton(this.cartItems.first()).click();
+        }
     }
 
     async goto() {

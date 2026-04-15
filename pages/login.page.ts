@@ -1,11 +1,11 @@
-import { type Page, type Locator, PlaywrightTestArgs, expect } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 import BasePage from './base.page';
 import UserModel from '../data-models/user.model';
 
 export const loginPage = {
-    loginPage: async ({ page }: PlaywrightTestArgs, use: (r: LoginPage) => void) => {
+    loginPage: async ({ page }, use) => {
         const loginPage = new LoginPage(page);
-        use(loginPage);
+        await use(loginPage);
     }
 };
 
