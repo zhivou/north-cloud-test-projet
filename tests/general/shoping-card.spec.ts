@@ -61,9 +61,7 @@ test('test cart page displays correct items and prices', async ({ inventoryPage,
 
     await test.step('assert user can remove products from cart', async () => {
         expect(await cartPage.cartItems.all()).toHaveLength(itemsToAdd);
-        for (let i = 0; i < itemsToAdd; i++) {
-          await cartPage.cartItemRemoveButton(cartPage.cartItems.first()).click();
-        }
+        await cartPage.removeAllItems();
         await expect(inventoryPage.navbar.cartBadge).not.toBeVisible();
         expect(await cartPage.cartItems.all()).toHaveLength(0);
       });

@@ -30,6 +30,13 @@ export class CartPage extends BasePage {
         this.cartItem = (parent) => new CartItemComponent(parent);
     }
 
+    async removeAllItems() {
+        const count = await this.cartItems.count();
+        for (let i = 0; i < count; i++) {
+            await this.cartItemRemoveButton(this.cartItems.first()).click();
+        }
+    }
+
     async goto() {
         await this.page.goto(this.pagePath);
     }
