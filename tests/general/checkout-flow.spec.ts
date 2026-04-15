@@ -77,3 +77,30 @@ test('test checkout flow fails if user information is not complete', async ({ ca
         });
     }
 });
+
+// API Mocking Test Scenario
+//
+// saucedemo does not have any API to test the checkout flow with an empty card or any other checkout flow errors. All works with states on the client side.
+// This is also not a proper test level to test the checkout flow errors like this.
+// The proper level would be componet tests like Storybook or Jest unit tests. Playwright is not a good fit for this. And should not be used for this type of tests.
+// However here is a hypotheticak test scenario that could work if we were to have anreal API calls in place.
+test.skip('test empty card checkout shows correct error message', async ({ cartPage, checkoutPage, page, standardUser }) => {
+    standardUser.generateRandomInformation();
+
+    // Mock the api call before navigating per Playwright documentation: https://playwright.dev/docs/api/class-route#route-continue
+    await page.route('/checkout-complete', async route => {
+        if (route.request().method() === 'POST') {
+            await route.fulfill({
+                status: 500,
+                contentType: 'application/json',
+                body: JSON.stringify({ error: 'Internal Server Error' }),
+            });
+        } else {
+            await route.continue();
+        }
+    });
+
+    await cartPage.checkoutButton.click();
+    await checkoutPage.completeCheckout(standardUser);
+    await expect(checkoutPage.checkoutInformation.errorMessage).toHaveText('Error: Internal Server Error');
+});

@@ -30,9 +30,8 @@ export default defineConfig({
     baseURL: process.env.BASE_URL ?? 'https://www.saucedemo.com',
     /* I assume that this is relible attribute to use for all tests */
     testIdAttribute: 'data-test',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    trace: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -51,7 +50,7 @@ export default defineConfig({
       name: 'general-tests',
       testDir: './tests/general',
       testMatch: '**/*.spec.ts',
-      //dependencies: ['setup'], TODO RE ENABLE THIS WHEN TESTS ARE READY
+      dependencies: ['setup'],
       use: {
         storageState: join(__dirname, '.auth', `${standardUser.username}.json`),
       },
