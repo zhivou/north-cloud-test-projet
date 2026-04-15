@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page, PlaywrightTestArgs } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import BasePage from './base.page';
 import { CheckoutInformationComponent } from '../components/checkout-information-component';
 import { CheckoutOverviewComponent } from '../components/checkout-overview-component';
@@ -7,9 +7,9 @@ import { CheckoutCompleteComponent } from '../components/checkout-complete-compo
 import ProductModel from '../data-models/product.model';
 
 export const checkoutPage = {
-    checkoutPage: async ({ page }: PlaywrightTestArgs, use: (r: CheckoutPage) => void) => {
+    checkoutPage: async ({ page }, use) => {
         const checkoutPage = new CheckoutPage(page);
-        use(checkoutPage);
+        await use(checkoutPage);
     },
 };
 
@@ -45,9 +45,10 @@ export class CheckoutPage extends BasePage {
     }
 
     async assertCheckoutItem(checkoutItem: Locator, item: ProductModel) {
-        await expect(checkoutItem.getByTestId('inventory-item-name')).toHaveText(item.name);
-        await expect(checkoutItem.getByTestId('inventory-item-price')).toHaveText(item.price);
-        await expect(checkoutItem.getByTestId('inventory-item-desc')).toHaveText(item.description);
-        await expect(checkoutItem.getByTestId('item-quantity')).toHaveText('1');
+        const cartItem = this.checkoutOverview.cartItem(checkoutItem);
+        await expect(cartItem.name).toHaveText(item.name);
+        await expect(cartItem.price).toHaveText(item.price);
+        await expect(cartItem.description).toHaveText(item.description);
+        await expect(cartItem.quantity).toHaveText('1');
     }
 }

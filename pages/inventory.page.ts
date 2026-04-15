@@ -1,11 +1,12 @@
-import { type Page, type Locator, PlaywrightTestArgs, expect } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 import BasePage from './base.page';
 import ProductModel from '../data-models/product.model';
+import { parsePrice } from '../utils/price.utils';
 
 export const inventoryPage = {
-    inventoryPage: async ({ page }: PlaywrightTestArgs, use: (r: InventoryPage) => void) => {
+    inventoryPage: async ({ page }, use) => {
         const inventoryPage = new InventoryPage(page);
-        use(inventoryPage);
+        await use(inventoryPage);
     },
 };
 
@@ -52,7 +53,7 @@ export class InventoryPage extends BasePage {
         for (const item of await this.allProucts()) {
             const priceText = await this.productPrice(item).textContent();
             expect(priceText, 'Expected each product card to have a visible price text').not.toBeNull();
-            prices.push(parseFloat(priceText!.slice(1)));
+            prices.push(parsePrice(priceText!));
         }
         return prices;
     }

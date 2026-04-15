@@ -1,6 +1,7 @@
 import ProductModel from '../../data-models/product.model';
-import UserModel from '../../data-models/user.model';
 import { expect, test } from '../../fixtures/base-fixtures';
+import { parsePrice } from '../../utils/price.utils';
+import { TAX_RATE } from '../../utils/tax.utils';
 
 const itemsToAdd = 3;
 const expectedCartItems = ProductModel.generateDefaultProducts().slice(0, itemsToAdd);
@@ -14,22 +15,21 @@ test.beforeEach(async ({ inventoryPage, cartPage }) => {
     await expect(cartPage.cartItems).toHaveCount(itemsToAdd);
 });
 
-test('test user can complete the checkout flow', async ({ inventoryPage, cartPage, checkoutPage }) => {
-    const user = new UserModel('standard_user');
-    user.generateRandomInformation();
+test('test user can complete the checkout flow', async ({ cartPage, checkoutPage, standardUser }) => {
+    standardUser.generateRandomInformation();
 
     await test.step('complete checkout flow', async () => {
         await cartPage.checkoutButton.click();
-        await checkoutPage.completeCheckout(user);
+        await checkoutPage.completeCheckout(standardUser);
     });
 
     await test.step('assert checkout complete page is displayed cart items are removed', async () => {
         await expect(checkoutPage.checkoutComplete.iconImage).toBeVisible();
         await expect(checkoutPage.checkoutComplete.titleText).toHaveText('Thank you for your order!');
         await expect(checkoutPage.checkoutComplete.descriptionText).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!');
-        await expect(inventoryPage.navbar.cartBadge).not.toBeVisible();
-        await checkoutPage.navbar.shoppingButton.click();
-        await expect(inventoryPage.productItems).toHaveCount(0);
+        await expect(checkoutPage.navbar.cartBadge).not.toBeVisible();
+        await cartPage.navbar.shoppingButton.click();
+        await expect(cartPage.cartItems).toHaveCount(0);
     });
 });
 
@@ -37,7 +37,7 @@ test('test user can complete the checkout flow', async ({ inventoryPage, cartPag
 // use first 4 items to test the checkout flow bug. it will show $105.96000000000001 instead of $105.96
 test('test checkout flow overview page shows correct information', async ({ cartPage, checkoutPage, standardUser }) => {
     standardUser.generateRandomInformation();
-    const taxRate = 0.08;
+    const taxRate = TAX_RATE;
 
     await test.step('complete first step of checkout flow', async () => {
         await cartPage.checkoutButton.click();
@@ -51,7 +51,7 @@ test('test checkout flow overview page shows correct information', async ({ cart
 
         for (const [index, checkoutItem] of allCheckoutItems.entries()) {
             await checkoutPage.assertCheckoutItem(checkoutItem, expectedCartItems[index]);
-            subtotal += Number.parseFloat(expectedCartItems[index].price.slice(1)); // TODO Move to unitls
+            subtotal += parsePrice(expectedCartItems[index].price);
         }
 
         const tax = subtotal * taxRate;

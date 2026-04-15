@@ -1,10 +1,10 @@
-import { type Locator, type Page, PlaywrightTestArgs } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import BasePage from './base.page';
 
 export const productDetailPage = {
-    productDetailPage: async ({ page }: PlaywrightTestArgs, use: (r: ProductDetailPage) => void) => {
+    productDetailPage: async ({ page }, use) => {
         const productDetailPage = new ProductDetailPage(page);
-        use(productDetailPage);
+        await use(productDetailPage);
     },
 };
 
