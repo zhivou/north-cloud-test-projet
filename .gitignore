@@ -150,3 +150,4 @@ vite.config.ts.timestamp-*
 !/.auth/.keep
 
 .idea/
+.DS_Store
