@@ -144,3 +144,9 @@ vite.config.ts.timestamp-*
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Local auth snapshots (keep directory, ignore contents)
+/.auth/*
+!/.auth/.keep
+
+.idea/
