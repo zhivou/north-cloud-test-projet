@@ -7,7 +7,7 @@ setup('create session for standard user', async ({ loginPage, standardUser }) =>
   expect(existsSync(userSessionFilePath)).toBe(true);
 });
 
-// I just added this as example that more users can be added here if needed. We only user
+// I just added this as example that more users can be added here if needed. We only use
 // standard user in the tests so I skipped the other users.
 setup.skip('create session for problem user', async ({ loginPage, problemUser }) => {
   const userSessionFilePath = await createStorageStateUI(loginPage, problemUser);

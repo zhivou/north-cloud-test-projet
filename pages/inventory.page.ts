@@ -13,7 +13,7 @@ export const inventoryPage = {
 export class InventoryPage extends BasePage {
     readonly pagePath = '/inventory.html';
 
-    // Prouduct items
+    // Product items
     readonly inventoryList: Locator;
     readonly productItems: Locator;
     readonly productName: (parent: Locator) => Locator;
@@ -43,14 +43,14 @@ export class InventoryPage extends BasePage {
         await this.page.goto(this.pagePath);
     }
 
-    async allProucts(): Promise<Locator[]> {
+    async allProducts(): Promise<Locator[]> {
         return await this.productItems.all();
     }
 
     // Collect prices from all product items and keeps the sorted order
     async collectPrices(): Promise<number[]> {
         const prices: number[] = [];
-        for (const item of await this.allProucts()) {
+        for (const item of await this.allProducts()) {
             const priceText = await this.productPrice(item).textContent();
             expect(priceText, 'Expected each product card to have a visible price text').not.toBeNull();
             prices.push(parsePrice(priceText!));
@@ -60,7 +60,7 @@ export class InventoryPage extends BasePage {
 
     async collectProductNames(): Promise<string[]> {
         const productNames: string[] = [];
-        for (const item of await this.allProucts()) {
+        for (const item of await this.allProducts()) {
             const productNameText = await this.productName(item).textContent();
             expect(productNameText, 'Expected each product card to have a visible product name text').not.toBeNull();
             productNames.push(productNameText!);
@@ -68,7 +68,7 @@ export class InventoryPage extends BasePage {
         return productNames;
     }
 
-    async addToCard(products: ProductModel[]) {
+    async addToCart(products: ProductModel[]) {
         for (const product of products) {
             const item = this.productItems.filter({ has: this.page.getByTestId('inventory-item-name').getByText(product.name, { exact: true }) });
             await this.productAddToCartButton(item).click();

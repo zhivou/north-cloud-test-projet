@@ -17,8 +17,8 @@ export class NavbarComponent {
     this.root = page.getByTestId('primary-header');
     this.shoppingButton = this.root.getByTestId('shopping-cart-link');
     this.cartBadge = this.shoppingButton.getByTestId('shopping-cart-badge');
-    // The element for this button is not well design in real world I would use a data-test attribute. I could use id but it is not recomended per best practices.
-    // getByRole with root isolation will work but I woudl refactor the code to use a data-test attribute.
+    // The element for this button is not well designed; in a real world scenario I would use a data-test attribute. I could use id but it is not recommended per best practices.
+    // getByRole with root isolation will work but I would refactor the code to use a data-test attribute.
     this.drawerButton = this.root.getByRole('button', { name: 'Open Menu' }); 
     this.secondaryHeader = page.getByTestId('secondary-header');
     this.secondaryHeaderTitle = this.secondaryHeader.getByTestId('title');

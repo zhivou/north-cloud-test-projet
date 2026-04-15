@@ -9,7 +9,7 @@ const expectedCartItems = ProductModel.generateDefaultProducts().slice(0, itemsT
 test.beforeEach(async ({ inventoryPage, cartPage }) => {
     await inventoryPage.goto();
     await inventoryPage.resetAppState();
-    await inventoryPage.addToCard(expectedCartItems);
+    await inventoryPage.addToCart(expectedCartItems);
     await expect(inventoryPage.navbar.cartBadge).toHaveText(String(itemsToAdd));
     await cartPage.goto();
     await expect(cartPage.cartItems).toHaveCount(itemsToAdd);
@@ -80,11 +80,11 @@ test('test checkout flow fails if user information is not complete', async ({ ca
 
 // API Mocking Test Scenario
 //
-// saucedemo does not have any API to test the checkout flow with an empty card or any other checkout flow errors. All works with states on the client side.
+// saucedemo does not have any API to test the checkout flow with an empty cart or any other checkout flow errors. All works with states on the client side.
 // This is also not a proper test level to test the checkout flow errors like this.
-// The proper level would be componet tests like Storybook or Jest unit tests. Playwright is not a good fit for this. And should not be used for this type of tests.
-// However here is a hypotheticak test scenario that could work if we were to have anreal API calls in place.
-test.skip('test empty card checkout shows correct error message', async ({ cartPage, checkoutPage, page, standardUser }) => {
+// The proper level would be component tests like Storybook or Jest unit tests. Playwright is not a good fit for this. And should not be used for this type of tests.
+// However here is a hypothetical test scenario that could work if we were to have a real API calls in place.
+test.skip('test empty cart checkout shows correct error message', async ({ cartPage, checkoutPage, page, standardUser }) => {
     standardUser.generateRandomInformation();
 
     // Mock the api call before navigating per Playwright documentation: https://playwright.dev/docs/api/class-route#route-continue
