@@ -1,5 +1,4 @@
 import { expect, test } from '../../fixtures/base-fixtures';
-import { protectedPageUnauthorizedDefinitions } from '../../fixtures/auth-pages-fixtures';
 import { wrongLoginUserScenarios } from '../../fixtures/users-fixture';
 
 test.beforeEach(async ({ loginPage }) => {
@@ -16,7 +15,7 @@ test('test locked user cannot login', async ({ loginPage, lockedOutUser }) => {
     await expect(loginPage.errorMessage).toContainText("Epic sadface: Sorry, this user has been locked out.");
 });
 
-test('test logut clears the session', async ({ loginPage, standardUser, inventoryPage }) => {
+test('test logout clears the session', async ({ loginPage, standardUser, inventoryPage }) => {
     await loginPage.login(standardUser);
     await loginPage.assertLoginSuccess();   
     await loginPage.logout();
@@ -45,7 +44,7 @@ test('unauthorized user cannot access protected pages', async ({
 }) => {
     const protectedPages = [inventoryPage, cartPage];
 
-    // Another example of data driven test this time I am using page objects to test multiple pages with soft asseriosn 
+    // Another example of data driven test this time I am using page objects to test multiple pages with soft assertions 
     for (const protectedPage of protectedPages) {
         await test.step(`visit ${protectedPage.pagePath}`, async () => {
             await protectedPage.goto();

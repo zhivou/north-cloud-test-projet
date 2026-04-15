@@ -19,7 +19,7 @@ npx playwright test
 - Swag Labs appears to make no product-related API calls in the tested flows. Most behavior is handled on the client side, and there is no clearly exposed backend API.
 - The product list shows only 6 products and has no pagination.
 - User sessions expire quickly (around 5 minutes).
-- The web application has no way to crate test data.
+- The web application has no way to create test data.
 
 # Framework structure
 The framework has 3 projects: `setup`, `auth-tests` (depends on `setup`), and `general-tests` (depends on `setup`).
@@ -67,7 +67,7 @@ The framework is ready to be extended with new projects in `playwright.config.ts
 - `tests/`: Test projects (`auth` and `general`).
 - `utils/`: Helpers
 
-## CI and Parralelization
+## CI and Parallelization
 All tests are ready to run both locally and in CI, with the current setup using the maximum available local workers and 3 workers in CI. The CI workflow is intended to be triggered manually as an on-demand regression run and can be found here: https://github.com/zhivou/north-cloud-test-projet/actions/workflows/playwright.yml
 
 ## Secrets and .env
@@ -117,7 +117,7 @@ Following best practices, this framework uses proactive cleanup in setup and `be
 - [x] Sort by name (A-Z and Z-A) correctly reorders products
 - [x] Clicking product navigates to detail page with correct data
 
-## 3. Shopping Cart (`tests/general/shoping-card.spec.ts`)
+## 3. Shopping Cart (`tests/general/shopping-cart.spec.ts`)
 - [x] Adding a product updates cart badge count
 - [x] Adding multiple products shows correct count
 - [x] Removing a product updates cart badge count
@@ -161,7 +161,7 @@ All bugs found while testing with `problem_user` are tracked here: https://githu
 | #11 | About page link in the sidebar menu navigates to incorrect URL |
 | #14 | Product with id=3 displays incorrect product title |
 
-# Considerations and Improvemnts
+# Considerations and Improvements
 - Many current test cases can be moved to lower test levels: cart calculation, sorting logic, and mocked checkout failures are better suited for unit, component (for example Storybook/Jest), or backend-level tests. Keeping all of them in E2E increases runtime and maintenance cost, so E2E should focus on realistic user workflows (for example: Login -> Sort -> Add products to cart -> Review cart -> Checkout) and prioritize the most important user-facing flows.
 - The Swag Labs development team should improve application testability in partnership with QA. Key improvements include adding a reliable way to seed environments, enabling local app startup (with Docker or natively), adopting ephemeral builds in CI/CD, and shifting testing left so automation stays effective, focused, and valuable instead of becoming automation for its own sake.
 - Keep the E2E suite lightweight and end-user-centered.

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", // Use modern JavaScript output target.
+    "module": "NodeNext", // Match Node.js ESM/CJS module behavior.
+    "moduleResolution": "NodeNext", // Resolve imports using NodeNext rules.
+    "noEmit": true // Type-check only; do not generate JS files.
+  },
+  "include": ["**/*.ts"] // Include all TypeScript files in this repo.
+}
